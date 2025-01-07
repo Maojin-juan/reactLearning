@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router";
+import { HashRouter, Route, Routes } from "react-router";
 import Layout from "./components/Layout";
 import Home from "./pages/home";
 import Week1 from "./pages/week1";
@@ -6,15 +6,15 @@ import Week2 from "./pages/Week2";
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Layout>
         <Routes>
-          <Route path="/reactLearning" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/week1" element={<Week1 />} />
           <Route path="/week2" element={<Week2 />} />
         </Routes>
       </Layout>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
