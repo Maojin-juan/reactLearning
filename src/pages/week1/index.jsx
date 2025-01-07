@@ -70,12 +70,6 @@ function Week1() {
     },
   ]);
 
-  // 查看細節按鈕的函數：將產品設置為臨時選中的產品，並更新主圖顯示
-  const handleViewDetails = (item) => {
-    setTempProduct(item); // 保存當前選中的產品數據
-    setMainImage(item.imageUrl); // 更新主圖顯示為該產品的圖片
-  };
-
   // 切換主圖的函數：用於點擊 "查看圖片" 時切換為主圖方便查看
   const handleChangeMainImage = (image) => {
     setMainImage(image); // 更新主圖顯示為該產品的圖片
@@ -105,10 +99,7 @@ function Week1() {
                     <TableCell>{item.price}</TableCell>
                     <TableCell>{item.is_enabled ? "是" : "否"}</TableCell>
                     <TableCell>
-                      <Button
-                        type="button"
-                        onClick={() => handleViewDetails(item)}
-                      >
+                      <Button onClick={() => setTempProduct(item)}>
                         查看細節
                       </Button>
                     </TableCell>
