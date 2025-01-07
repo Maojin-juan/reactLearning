@@ -84,8 +84,8 @@ function Week1() {
   return (
     <>
       <div className="container mx-auto py-10">
-        <div className="mt-12 flex gap-6">
-          <div className="mx-auto w-1/2">
+        <div className="mx-auto mt-12 flex gap-6">
+          <div className="w-1/2">
             <h2 className="mb-2 text-3xl">產品列表</h2>
             <Table>
               <TableHeader>
@@ -117,7 +117,7 @@ function Week1() {
               </TableBody>
             </Table>
           </div>
-          <div className="mx-auto w-1/2">
+          <div className="w-1/2">
             <h2 className="mb-2 text-3xl">單一產品細節</h2>
             {tempProduct ? (
               <div className="rounded-lg border border-gray-200 bg-white shadow">
@@ -136,9 +136,9 @@ function Week1() {
                       className="ms-2 h-6 rounded-full px-2.5 text-xs font-medium"
                     >{`# ${tempProduct.category}`}</Button>
                   </h5>
-                  <p className=" ">商品描述：{tempProduct.description}</p>
+                  <p>商品描述：{tempProduct.description}</p>
 
-                  <p className="">商品內容：{tempProduct.content}</p>
+                  <p>商品內容：{tempProduct.content}</p>
                   <div className="flex">
                     <p className="text-slate-400">
                       <del>{tempProduct.origin_price}</del>
