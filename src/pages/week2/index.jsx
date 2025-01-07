@@ -3,6 +3,14 @@ import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const API_BASE = import.meta.env.VITE_BASE_URL;
 const API_PATH = import.meta.env.VITE_BASE_PATH;
@@ -13,6 +21,7 @@ function Week2() {
     password: "",
   });
 
+  const [mainImage, setMainImage] = useState(null);
   const [isAuth, setisAuth] = useState(false);
   const [products, setProducts] = useState([]);
   const [tempProduct, setTempProduct] = useState(null);
@@ -52,6 +61,17 @@ function Week2() {
     }));
   };
 
+  // 查看細節按鈕的函數：將產品設置為臨時選中的產品，並更新主圖顯示
+  const handleViewDetails = (item) => {
+    setTempProduct(item); // 保存當前選中的產品數據
+    setMainImage(item.imageUrl); // 更新主圖顯示為該產品的圖片
+  };
+
+  // 切換主圖的函數：用於點擊 "查看圖片" 時切換為主圖方便查看
+  const handleChangeMainImage = (image) => {
+    setMainImage(image); // 更新主圖顯示為該產品的圖片
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -74,94 +94,114 @@ function Week2() {
     <>
       {isAuth ? (
         <div className="container mx-auto">
-          <div className="row mt-5">
-            <div className="col-md-6">
-              <button
-                className="btn btn-danger mb-5"
+          <div className="mx-auto mt-12 flex gap-6">
+            <div className="w-1/2">
+              <Button
+                className="mb-5 bg-red-600"
                 type="button"
                 id="check"
                 onClick={checkLogin}
               >
                 確認是否登入
-              </button>
-              <h2>產品列表</h2>
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>產品名稱</th>
-                    <th>原價</th>
-                    <th>售價</th>
-                    <th>是否啟用</th>
-                    <th>查看細節</th>
-                  </tr>
-                </thead>
-                <tbody>
+              </Button>
+              <h2 className="mb-2 text-3xl">產品列表</h2>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>產品名稱</TableHead>
+                    <TableHead>原價</TableHead>
+                    <TableHead>售價</TableHead>
+                    <TableHead>是否啟用</TableHead>
+                    <TableHead>查看細節</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {products && products.length > 0 ? (
                     products.map((item) => (
-                      <tr key={item.id}>
-                        <td>{item.title}</td>
-                        <td>{item.origin_price}</td>
-                        <td>{item.price}</td>
-                        <td>{item.is_enabled ? "啟用" : "未啟用"}</td>
-                        <td>
-                          <button
-                            className="btn btn-primary"
-                            onClick={() => setTempProduct(item)}
-                          >
+                      <TableRow key={item.id}>
+                        <TableCell>{item.title}</TableCell>
+                        <TableCell>{item.origin_price}</TableCell>
+                        <TableCell>{item.price}</TableCell>
+                        <TableCell>
+                          {item.is_enabled ? "啟用" : "未啟用"}
+                        </TableCell>
+                        <TableCell>
+                          <Button onClick={() => setTempProduct(item)}>
                             查看細節
-                          </button>
-                        </td>
-                      </tr>
+                          </Button>
+                        </TableCell>
+                      </TableRow>
                     ))
                   ) : (
-                    <tr>
-                      <td colSpan="5">尚無產品資料</td>
-                    </tr>
+                    <TableRow>
+                      <TableCell colSpan="5">尚無產品資料</TableCell>
+                    </TableRow>
                   )}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
-            <div className="col-md-6">
-              <h2>單一產品細節</h2>
+            <div className="w-1/2">
+              <h2 className="mb-2 text-3xl">單一產品細節</h2>
               {tempProduct ? (
-                <div className="card mb-3">
-                  <img
-                    src={tempProduct.imageUrl}
-                    className="card-img-top primary-image"
-                    alt="主圖"
-                  />
-                  <div className="card-body">
-                    <h5 className="card-title">
+                <div className="rounded-lg border border-gray-200 bg-white shadow">
+                  <div className="relative h-80 w-full">
+                    <img
+                      src={mainImage || tempProduct.imageUrl}
+                      className="h-full w-full rounded-t-lg object-cover"
+                      alt="主圖"
+                    />
+                  </div>
+                  <div className="p-5">
+                    <h5 className="flex items-center text-xl font-bold">
                       {tempProduct.title}
-                      <span className="badge bg-primary ms-2">
-                        {tempProduct.category}
-                      </span>
+                      <Button
+                        type="button"
+                        className="ms-2 h-6 rounded-full px-2.5 text-xs font-medium"
+                      >{`# ${tempProduct.category}`}</Button>
                     </h5>
-                    <p className="card-text">
-                      商品描述：{tempProduct.category}
-                    </p>
-                    <p className="card-text">商品內容：{tempProduct.content}</p>
-                    <div className="d-flex">
-                      <p className="card-text text-secondary">
+                    <p>商品描述：{tempProduct.category}</p>
+                    <p>商品內容：{tempProduct.content}</p>
+                    <div className="flex">
+                      <p className="text-slate-400">
                         <del>{tempProduct.origin_price}</del>
                       </p>
                       元 / {tempProduct.price} 元
                     </div>
-                    <h5 className="mt-3">更多圖片：</h5>
-                    <div className="d-flex flex-wrap">
-                      {tempProduct.imagesUrl?.map((url, index) => (
+                    <h5 className="mt-12">更多圖片：</h5>
+                    <div className="flex flex-wrap gap-2">
+                      <div
+                        className="image-container"
+                        onClick={() =>
+                          handleChangeMainImage(tempProduct.imageUrl)
+                        }
+                      >
                         <img
-                          key={index}
-                          src={url}
-                          className="images"
-                          alt="副圖"
+                          src={tempProduct.imageUrl}
+                          alt="主圖"
+                          className={`thumbnail-image ${mainImage === tempProduct.imageUrl ? "active" : ""}`}
                         />
+                        <div className="image-overlay">查看圖片</div>
+                      </div>
+                      {tempProduct.imagesUrl?.map((url, index) => (
+                        <div
+                          key={index}
+                          className="image-container"
+                          onClick={() => handleChangeMainImage(url)}
+                        >
+                          <img
+                            key={index}
+                            src={url}
+                            alt={`圖片 ${index + 1}`}
+                            className={`thumbnail-image ${mainImage === url ? "active" : ""}`}
+                          />
+                          <div className="image-overlay">查看圖片</div>
+                        </div>
                       ))}
                     </div>
                   </div>
                 </div>
               ) : (
-                <p className="text-secondary">請選擇一個商品查看</p>
+                <p className="text-slate-600">請選擇一個商品查看</p>
               )}
             </div>
           </div>
