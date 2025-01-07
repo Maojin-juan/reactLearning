@@ -10,7 +10,7 @@ const Navbar = () => {
               key={index}
               to={`/week${index + 1}`}
               className={({ isActive }) =>
-                isActive ? "text-primary" : "text-black"
+                isActive ? "text-slate-400" : "text-black"
               }
             >
               Week {index + 1}
