@@ -9,10 +9,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { signInAPI } from "@/services/signIn";
+
 function Product({ products, setTempProduct }) {
   return (
     <div className="w-1/2">
-      <Button className="mb-5 bg-red-600" type="button" id="check">
+      <Button
+        className="mb-5 bg-red-600"
+        type="button"
+        id="check"
+        onClick={signInAPI.checkAuth}
+      >
         確認是否登入
       </Button>
       <h2 className="mb-2 text-3xl">產品列表</h2>
