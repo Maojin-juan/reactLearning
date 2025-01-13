@@ -3,6 +3,7 @@ import Layout from "./components/Layout";
 import Home from "./pages/home";
 import Week1 from "./pages/week1";
 import Week2 from "./pages/Week2";
+import Week3 from "./pages/Week3";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/week1" element={<Week1 />} />
           <Route path="/week2" element={<Week2 />} />
+          <Route path="/week3" element={<Week3 />} />
         </Routes>
       </Layout>
     </HashRouter>
