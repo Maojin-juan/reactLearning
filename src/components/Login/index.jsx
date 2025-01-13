@@ -8,11 +8,13 @@ import { Button } from "@/components/ui/button";
 import { signInAPI } from "@/services/signIn";
 import { productAPI } from "@/services/product";
 
+const initialFormData = {
+  username: "",
+  password: "",
+};
+
 export function Login({ setIsAuth, setProducts }) {
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState(initialFormData);
 
   const handleInputChange = (event) => {
     const { id, value } = event.target;
