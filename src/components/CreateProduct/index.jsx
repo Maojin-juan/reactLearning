@@ -7,13 +7,59 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
-function CreateProduct({ products, setTempProduct }) {
+import Modal from "@/components/Modal";
+import { useState } from "react";
+
+const initialFormData = {
+  id: "",
+  imageUrl: "",
+  title: "",
+  category: "",
+  unit: "",
+  originPrice: "",
+  price: "",
+  description: "",
+  content: "",
+  isEnabled: false,
+  imagesUrl: [],
+};
+
+function CreateProduct({ products }) {
+  const [formData, setFormData] = useState(initialFormData);
+
   return (
     <div className="container">
       <div className="text-end">
-        <Button type="button">建立新的產品</Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              variant="outline"
+              className="rounded-full px-8 py-2"
+              size="lg"
+              onClick={() =>
+                setFormData({
+                  id: formData.id || "",
+                  imageUrl: formData.imageUrl || "",
+                  title: formData.title || "",
+                  category: formData.category || "",
+                  unit: formData.unit || "",
+                  originPrice: formData.originPrice || "",
+                  price: formData.price || "",
+                  description: formData.description || "",
+                  content: formData.content || "",
+                  isEnabled: formData.isEnabled || false,
+                  imagesUrl: formData.imagesUrl || [],
+                })
+              }
+            >
+              建立新的產品
+            </Button>
+          </DialogTrigger>
+          <Modal formData={formData} title="Are you absolutely sure?" />
+        </Dialog>
       </div>
       <Table>
         <TableHeader>
@@ -44,20 +90,18 @@ function CreateProduct({ products, setTempProduct }) {
                   )}
                 </TableCell>
                 <TableCell className="flex justify-center gap-3">
-                  <Button
-                    onClick={() => {
-                      setTempProduct(item);
-                    }}
-                  >
-                    查看細節
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setTempProduct(item);
-                    }}
-                  >
-                    查看細節
-                  </Button>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button>查看細節</Button>
+                    </DialogTrigger>
+                    <Modal />
+                  </Dialog>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button>查看細節</Button>
+                    </DialogTrigger>
+                    <Modal />
+                  </Dialog>
                 </TableCell>
               </TableRow>
             ))
@@ -68,51 +112,6 @@ function CreateProduct({ products, setTempProduct }) {
           )}
         </TableBody>
       </Table>
-      <table className="mt-4 table">
-        <thead>
-          <tr>
-            <th width="120">分類</th>
-            <th>產品名稱</th>
-            <th width="120">原價</th>
-            <th width="120">售價</th>
-            <th width="100">是否啟用</th>
-            <th width="120">編輯</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product) => (
-            <tr key={product.id}>
-              <td>{product.category}</td>
-              <td>{product.title}</td>
-              <td className="text-end">{product.origin_price}</td>
-              <td className="text-end">{product.price}</td>
-              <td>
-                {product.is_enabled ? (
-                  <span className="text-success">啟用</span>
-                ) : (
-                  <span>未啟用</span>
-                )}
-              </td>
-              <td>
-                <div className="btn-group">
-                  <button
-                    type="button"
-                    className="btn btn-outline-primary btn-sm"
-                  >
-                    編輯
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-outline-danger btn-sm"
-                  >
-                    刪除
-                  </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
   );
 }
