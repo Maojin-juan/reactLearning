@@ -11,7 +11,7 @@ import {
 
 import { signInAPI } from "@/services/signIn";
 
-function Product({ products, setTempProduct }) {
+function ProductList({ products, setTempProduct }) {
   return (
     <div className="w-1/2">
       <Button
@@ -63,9 +63,9 @@ function Product({ products, setTempProduct }) {
   );
 }
 
-Product.propTypes = {
+ProductList.propTypes = {
   products: PropTypes.array.isRequired,
   setTempProduct: PropTypes.func.isRequired,
 };
 
-export default Product;
+export default ProductList;

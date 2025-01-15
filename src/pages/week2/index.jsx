@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import ProductDetail from "@/components/ProductDetail";
-import Product from "@/components/Product";
+import ProductList from "@/components/ProductList";
 import Login from "@/components/Login";
 
 function Week2() {
@@ -14,7 +14,7 @@ function Week2() {
       {isAuth ? (
         <div className="container mx-auto">
           <div className="mx-auto mt-12 flex gap-6">
-            <Product products={products} setTempProduct={setTempProduct} />
+            <ProductList products={products} setTempProduct={setTempProduct} />
             <ProductDetail tempProduct={tempProduct} />
           </div>
         </div>
