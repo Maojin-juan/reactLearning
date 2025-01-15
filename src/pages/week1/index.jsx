@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -7,7 +6,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+  Button,
+} from "@/components/ui";
 
 function Week1() {
   // 設置主圖的狀態，用於顯示或更新主圖

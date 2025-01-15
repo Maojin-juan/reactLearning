@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -7,7 +6,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+  Button,
+} from "@/components/ui";
 
 import { signInAPI } from "@/services/signIn";
 

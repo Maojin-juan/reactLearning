@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui";
 
 function ProductDetail({ tempProduct }) {
   const [mainImage, setMainImage] = useState(null);
