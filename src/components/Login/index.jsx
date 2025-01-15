@@ -25,7 +25,7 @@ export function Login({ setIsAuth, setProducts }) {
   };
 
   const getProduct = async () => {
-    const result = await productAPI();
+    const result = await productAPI.getProducts();
     setProducts(result.products);
   };
 
