@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
-import Modal from "@/components/Modal";
+import ProductModal from "@/components/ProductModal";
 import { useState } from "react";
 
 const initialFormData = {
@@ -58,7 +58,7 @@ function CreateProduct({ products }) {
               建立新的產品
             </Button>
           </DialogTrigger>
-          <Modal formData={formData} title="Are you absolutely sure?" />
+          <ProductModal formData={formData} title="Are you absolutely sure?" />
         </Dialog>
       </div>
       <Table>
@@ -94,13 +94,13 @@ function CreateProduct({ products }) {
                     <DialogTrigger asChild>
                       <Button>查看細節</Button>
                     </DialogTrigger>
-                    <Modal />
+                    <ProductModal />
                   </Dialog>
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button>查看細節</Button>
                     </DialogTrigger>
-                    <Modal />
+                    <ProductModal />
                   </Dialog>
                 </TableCell>
               </TableRow>
