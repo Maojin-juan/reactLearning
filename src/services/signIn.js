@@ -8,8 +8,6 @@ export const signInAPI = {
         .find((row) => row.startsWith("hexToken="))
         ?.split("=")[1];
 
-      console.log(token);
-
       if (token) {
         axios.defaults.headers.common.Authorization = token;
       } else {
