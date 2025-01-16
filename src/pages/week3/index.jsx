@@ -28,7 +28,12 @@ function Week3() {
               </DialogTrigger>
             </div>
             <ProductHandle products={products} />
-            <ProductModal title="建立新的產品" />
+            <ProductModal
+              title="建立新的產品"
+              modalType="add"
+              products={products}
+              setProducts={setProducts}
+            />
           </Dialog>
         </div>
       ) : (

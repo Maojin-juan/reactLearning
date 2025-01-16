@@ -1,16 +1,15 @@
 import PropTypes from "prop-types";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-  Button,
   Dialog,
   DialogTrigger,
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+  Button,
 } from "@/components/ui";
-
 import ProductModal from "@/components/ProductModal";
 
 function ProductHandle({ products }) {
@@ -46,20 +45,20 @@ function ProductHandle({ products }) {
                   <DialogTrigger asChild>
                     <Button>編輯</Button>
                   </DialogTrigger>
-                  <ProductModal />
+                  <ProductModal title="編輯" modalType="edit" />
                 </Dialog>
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button>刪除</Button>
                   </DialogTrigger>
-                  <ProductModal />
+                  <ProductModal title="刪除" modalType="delete" />
                 </Dialog>
               </TableCell>
             </TableRow>
           ))
         ) : (
           <TableRow>
-            <TableCell colSpan="5">尚無產品資料</TableCell>
+            <TableCell colSpan="6">尚無產品資料</TableCell>
           </TableRow>
         )}
       </TableBody>
