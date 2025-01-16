@@ -17,12 +17,13 @@ export const signInAPI = {
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/user/check`,
       );
-      console.log(response.data);
       return response.data;
     } catch (error) {
-      console.error(error);
+      console.error("API 錯誤:", error);
+      throw error;
     }
   },
+
   signIn: async (formData) => {
     try {
       const response = await axios.post(
