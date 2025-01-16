@@ -43,13 +43,13 @@ function ProductHandle({ products }) {
               <TableCell className="flex justify-center gap-3">
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button>編輯</Button>
+                    <Button variant="outline">編輯</Button>
                   </DialogTrigger>
                   <ProductModal title="編輯" modalType="edit" />
                 </Dialog>
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button>刪除</Button>
+                    <Button className="bg-red-600">刪除</Button>
                   </DialogTrigger>
                   <ProductModal title="刪除" modalType="delete" />
                 </Dialog>

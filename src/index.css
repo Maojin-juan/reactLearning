@@ -7,7 +7,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground h-full;
+    @apply h-full bg-background text-foreground;
   }
 
   :root {
@@ -87,5 +87,9 @@
   .image-container:hover .image-overlay,
   .image-container:focus-within .image-overlay {
     @apply opacity-100;
+  }
+
+  [data-state="open"] .absolute.right-4.top-4 {
+    @apply top-6 rounded-full p-2 text-white hover:bg-white hover:text-black;
   }
 }
