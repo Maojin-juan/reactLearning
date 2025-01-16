@@ -13,7 +13,7 @@ export const productAPI = {
     }
   },
 
-  updateProductData: async (id, templateData, modalType) => {
+  updateProductData: async (id, formData, modalType) => {
     const url =
       modalType === "edit"
         ? `${import.meta.env.VITE_BASE_URL}/api/${import.meta.env.VITE_BASE_PATH}/admin/product/${id}`
@@ -21,11 +21,11 @@ export const productAPI = {
 
     const productData = {
       data: {
-        ...templateData,
-        origin_price: Number(templateData.origin_price),
-        price: Number(templateData.price),
-        is_enabled: templateData.is_enabled ? 1 : 0,
-        imagesUrl: templateData.imagesUrl,
+        ...formData,
+        origin_price: Number(formData.origin_price),
+        price: Number(formData.price),
+        is_enabled: formData.is_enabled ? 1 : 0,
+        imagesUrl: formData.imagesUrl,
       },
     };
 
