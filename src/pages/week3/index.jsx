@@ -1,15 +1,26 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 import { Dialog, DialogTrigger, Button } from "@/components/ui";
+
+import { useAuth } from "@/hooks/useAuth";
 
 import Login from "@/components/Login";
 import ProductHandle from "@/components/ProductHandle";
-
 import ProductModal from "@/components/ProductModal";
+import { productAPI } from "@/services/product";
 
 function Week3() {
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useAuth();
   const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      if (isAuth) {
+        const updatedProducts = await productAPI.getProducts();
+        setProducts(updatedProducts.products);
+      }
+    };
+    fetchProducts();
+  }, [isAuth]);
 
   return (
     <>
@@ -31,7 +42,6 @@ function Week3() {
             <ProductModal
               title="建立新的產品"
               modalType="add"
-              products={products}
               setProducts={setProducts}
             />
           </Dialog>

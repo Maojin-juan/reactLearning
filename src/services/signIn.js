@@ -12,6 +12,7 @@ export const signInAPI = {
         axios.defaults.headers.common.Authorization = token;
       } else {
         console.warn("Token not found");
+        throw new Error("Token not found");
       }
 
       const response = await axios.post(

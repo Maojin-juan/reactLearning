@@ -1,9 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import { Input, Label, Button } from "@/components/ui";
 
 import { signInAPI } from "@/services/signIn";
 import { productAPI } from "@/services/product";
@@ -13,7 +11,7 @@ const initialFormData = {
   password: "",
 };
 
-export function Login({ setIsAuth, setProducts }) {
+export function Login({ setIsAuth }) {
   const [formData, setFormData] = useState(initialFormData);
 
   const handleInputChange = (event) => {
@@ -22,11 +20,6 @@ export function Login({ setIsAuth, setProducts }) {
       ...formData,
       [id]: value,
     });
-  };
-
-  const getProduct = async () => {
-    const result = await productAPI.getProducts();
-    setProducts(result.products);
   };
 
   const handleSubmit = async (event) => {
@@ -39,7 +32,7 @@ export function Login({ setIsAuth, setProducts }) {
       document.cookie = `hexToken=${token};expires=${new Date(expired).toUTCString()};path=/;`;
       axios.defaults.headers.common.Authorization = token;
 
-      getProduct();
+      productAPI.getProducts();
 
       setIsAuth(true);
     } catch (error) {

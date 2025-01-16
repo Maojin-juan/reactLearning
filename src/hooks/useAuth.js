@@ -10,19 +10,22 @@ export const useAuth = () => {
       /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
       "$1",
     );
-    axios.defaults.headers.common.Authorization = token;
 
-    const verifyAdmin = async () => {
-      try {
-        await signInAPI.checkAuth();
-        setIsAuth(true);
-      } catch (err) {
-        console.log(err.response?.data?.message || "驗證失敗");
-      }
-    };
+    if (token) {
+      axios.defaults.headers.common.Authorization = token;
 
-    verifyAdmin();
+      const verifyAdmin = async () => {
+        try {
+          await signInAPI.checkAuth();
+          setIsAuth(true);
+        } catch (err) {
+          console.log(err.response?.data?.message || "驗證失敗");
+        }
+      };
+
+      verifyAdmin();
+    }
   }, []);
 
-  return isAuth;
+  return [isAuth, setIsAuth];
 };
