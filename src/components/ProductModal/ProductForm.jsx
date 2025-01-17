@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { Label, Input, Textarea, Checkbox, Button } from "@/components/ui";
+import { useEffect } from "react";
 
 const IMAGE_CONFIG = { MAX: 5, MIN: 1 };
 const FORM_FIELDS = {
@@ -160,20 +161,8 @@ function ProductForm({ formData, setFormData }) {
 }
 
 ProductForm.propTypes = {
-  formData: PropTypes.shape({
-    id: PropTypes.string,
-    imageUrl: PropTypes.string,
-    title: PropTypes.string,
-    category: PropTypes.string,
-    unit: PropTypes.string,
-    originPrice: PropTypes.string,
-    price: PropTypes.string,
-    description: PropTypes.string,
-    content: PropTypes.string,
-    is_enabled: PropTypes.bool,
-    imagesUrl: PropTypes.arrayOf(PropTypes.string),
-  }).isRequired,
-  setFormData: PropTypes.func.isRequired,
+  formData: PropTypes.object,
+  setFormData: PropTypes.func,
 };
 
 export default ProductForm;
