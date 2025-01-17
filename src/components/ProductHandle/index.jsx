@@ -12,7 +12,23 @@ import {
 } from "@/components/ui";
 import ProductModal from "@/components/ProductModal";
 
-function ProductHandle({ products }) {
+function ProductHandle({ products, setProducts, formData, setFormData }) {
+  const openModal = (product) => {
+    setFormData({
+      id: product.id || "",
+      imageUrl: product.imageUrl || "",
+      title: product.title || "",
+      category: product.category || "",
+      unit: product.unit || "",
+      origin_price: product.origin_price || "",
+      price: product.price || "",
+      description: product.description || "",
+      content: product.content || "",
+      is_enabled: product.is_enabled || false,
+      imagesUrl: product.imagesUrl || [],
+    });
+  };
+
   return (
     <Table>
       <TableHeader>
@@ -43,15 +59,35 @@ function ProductHandle({ products }) {
               <TableCell className="flex justify-center gap-3">
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button variant="outline">編輯</Button>
+                    <Button variant="outline" onClick={() => openModal(item)}>
+                      編輯
+                    </Button>
                   </DialogTrigger>
-                  <ProductModal title="編輯" modalType="edit" />
+                  <ProductModal
+                    title="編輯"
+                    modalType="edit"
+                    setProducts={setProducts}
+                    formData={formData}
+                    setFormData={setFormData}
+                  />
                 </Dialog>
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button className="bg-red-600">刪除</Button>
+                    <Button
+                      className="bg-red-600"
+                      onClick={() => openModal(item)}
+                    >
+                      刪除
+                    </Button>
                   </DialogTrigger>
-                  <ProductModal title="刪除" modalType="delete" />
+                  <ProductModal
+                    title="刪除"
+                    modalType="delete"
+                    products={item}
+                    setProducts={setProducts}
+                    formData={formData}
+                    setFormData={setFormData}
+                  />
                 </Dialog>
               </TableCell>
             </TableRow>
@@ -68,6 +104,9 @@ function ProductHandle({ products }) {
 
 ProductHandle.propTypes = {
   products: PropTypes.array.isRequired,
+  setProducts: PropTypes.func,
+  formData: PropTypes.object,
+  setFormData: PropTypes.func,
 };
 
 export default ProductHandle;
