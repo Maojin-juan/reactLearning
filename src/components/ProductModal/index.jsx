@@ -1,4 +1,3 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
 import {
   DialogClose,
@@ -13,29 +12,21 @@ import ProductForm from "./ProductForm";
 
 import { productAPI } from "@/services/product";
 
-const initialFormData = {
-  id: "",
-  imageUrl: "",
-  title: "",
-  category: "",
-  unit: "",
-  origin_price: "",
-  price: "",
-  description: "",
-  content: "",
-  is_enabled: false,
-  imagesUrl: [],
-};
-
-function ProductModal({ title, modalType, setProducts }) {
-  const [formData, setFormData] = useState(initialFormData);
-
+function ProductModal({
+  title,
+  modalType,
+  setProducts,
+  formData,
+  setFormData,
+}) {
   const onSubmit = async () => {
-    modalType === "delete"
-      ? await productAPI.delProductData(formData.id)
-      : await productAPI.updateProductData(formData.id, formData, modalType);
-    const updatedProducts = await productAPI.getProducts();
+    if (modalType === "delete") {
+      await productAPI.delProductData(formData.id);
+    } else {
+      await productAPI.updateProductData(formData.id, formData, modalType);
+    }
 
+    const updatedProducts = await productAPI.getProducts();
     setProducts(updatedProducts.products);
   };
 
@@ -82,6 +73,8 @@ ProductModal.propTypes = {
   title: PropTypes.string,
   modalType: PropTypes.string,
   setProducts: PropTypes.func,
+  formData: PropTypes.object,
+  setFormData: PropTypes.func,
 };
 
 export default ProductModal;

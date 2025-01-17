@@ -8,15 +8,34 @@ import ProductHandle from "@/components/ProductHandle";
 import ProductModal from "@/components/ProductModal";
 import { productAPI } from "@/services/product";
 
+const initialFormData = {
+  id: "",
+  imageUrl: "",
+  title: "",
+  category: "",
+  unit: "",
+  origin_price: "",
+  price: "",
+  description: "",
+  content: "",
+  is_enabled: false,
+  imagesUrl: [],
+};
+
 function Week3() {
   const [isAuth, setIsAuth] = useAuth();
   const [products, setProducts] = useState([]);
+  const [formData, setFormData] = useState(initialFormData);
 
   useEffect(() => {
     const fetchProducts = async () => {
       if (isAuth) {
-        const updatedProducts = await productAPI.getProducts();
-        setProducts(updatedProducts.products);
+        try {
+          const updatedProducts = await productAPI.getProducts();
+          setProducts(updatedProducts.products);
+        } catch (error) {
+          console.error("獲取產品失敗:", error);
+        }
       }
     };
     fetchProducts();
@@ -38,11 +57,18 @@ function Week3() {
                 </Button>
               </DialogTrigger>
             </div>
-            <ProductHandle products={products} />
             <ProductModal
               title="建立新的產品"
               modalType="add"
               setProducts={setProducts}
+              formData={formData}
+              setFormData={setFormData}
+            />
+            <ProductHandle
+              products={products}
+              setProducts={setProducts}
+              formData={formData}
+              setFormData={setFormData}
             />
           </Dialog>
         </div>
