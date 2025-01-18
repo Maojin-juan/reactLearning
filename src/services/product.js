@@ -24,7 +24,7 @@ export const productAPI = {
         ...formData,
         origin_price: Number(formData.origin_price),
         price: Number(formData.price),
-        is_enabled: formData.is_enabled ? 1 : 0,
+        is_enabled: formData.is_enabled ? true : false,
         imagesUrl: formData.imagesUrl,
       },
     };
