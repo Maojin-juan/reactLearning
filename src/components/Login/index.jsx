@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { Input, Label, Button } from "@/components/ui";
 
 import { signInAPI } from "@/services/signIn";
-import { productAPI } from "@/services/product";
 
 const initialFormData = {
   username: "",
@@ -13,6 +12,7 @@ const initialFormData = {
 
 export function Login({ setIsAuth }) {
   const [formData, setFormData] = useState(initialFormData);
+  const [error, setError] = useState(null);
 
   const handleInputChange = (event) => {
     const { id, value } = event.target;
@@ -29,15 +29,15 @@ export function Login({ setIsAuth }) {
       const result = await signInAPI.signIn(formData);
       const { token, expired } = result;
 
+      // 設置 cookie，並指定過期時間
       document.cookie = `hexToken=${token};expires=${new Date(expired).toUTCString()};path=/;`;
       axios.defaults.headers.common.Authorization = token;
 
-      productAPI.getProducts();
-
       setIsAuth(true);
+      setError(null);
     } catch (error) {
       console.error(error);
-      alert(`登入失敗: ${error.response?.data?.message}`);
+      setError(error.response?.data?.message || "登入失敗，請稍後再試。");
     }
   };
 
@@ -45,6 +45,7 @@ export function Login({ setIsAuth }) {
     <div className="container mx-auto flex h-screen flex-col items-center justify-center">
       <div className="flex flex-col justify-center rounded-lg border p-10">
         <h1 className="mb-3 text-3xl font-normal">請先登入</h1>
+
         <div>
           <form
             id="form"
@@ -77,6 +78,7 @@ export function Login({ setIsAuth }) {
             <Button className="w-full" type="submit">
               登入
             </Button>
+            {error && <p className="text-center text-red-500">{error}</p>}
           </form>
         </div>
       </div>
@@ -87,7 +89,6 @@ export function Login({ setIsAuth }) {
 
 Login.propTypes = {
   setIsAuth: PropTypes.func.isRequired,
-  setProducts: PropTypes.func.isRequired,
 };
 
 export default Login;
