@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import { Label, Input, Textarea, Checkbox, Button } from "@/components/ui";
-import { useEffect } from "react";
 
 const IMAGE_CONFIG = { MAX: 5, MIN: 1 };
 const FORM_FIELDS = {
@@ -151,7 +150,8 @@ function ProductForm({ formData, setFormData }) {
         <div className="mt-3 flex items-center gap-2">
           <Checkbox
             id="is_enabled"
-            onClick={() => handleCheckboxClick("is_enabled")}
+            onCheckedChange={() => handleCheckboxClick("is_enabled")}
+            checked={formData.is_enabled}
           />
           <Label htmlFor="is_enabled">是否啟用</Label>
         </div>
@@ -161,8 +161,8 @@ function ProductForm({ formData, setFormData }) {
 }
 
 ProductForm.propTypes = {
-  formData: PropTypes.object,
-  setFormData: PropTypes.func,
+  formData: PropTypes.object.isRequired,
+  setFormData: PropTypes.func.isRequired,
 };
 
 export default ProductForm;
