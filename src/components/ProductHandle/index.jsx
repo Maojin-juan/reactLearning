@@ -11,8 +11,13 @@ import {
   Button,
 } from "@/components/ui";
 import ProductModal from "@/components/ProductModal";
-
-function ProductHandle({ products, setProducts, formData, setFormData }) {
+function ProductHandle({
+  products,
+  setProducts,
+  formData,
+  setFormData,
+  setLoading,
+}) {
   const openModal = (product) => {
     setFormData({
       id: product.id || "",
@@ -69,6 +74,7 @@ function ProductHandle({ products, setProducts, formData, setFormData }) {
                     setProducts={setProducts}
                     formData={formData}
                     setFormData={setFormData}
+                    setLoading={setLoading}
                   />
                 </Dialog>
                 <Dialog>
@@ -87,6 +93,7 @@ function ProductHandle({ products, setProducts, formData, setFormData }) {
                     setProducts={setProducts}
                     formData={formData}
                     setFormData={setFormData}
+                    setLoading={setLoading}
                   />
                 </Dialog>
               </TableCell>
@@ -94,7 +101,7 @@ function ProductHandle({ products, setProducts, formData, setFormData }) {
           ))
         ) : (
           <TableRow>
-            <TableCell colSpan="6">尚無產品資料</TableCell>
+            <TableCell colSpan={6}>尚無產品資料</TableCell>
           </TableRow>
         )}
       </TableBody>
@@ -104,9 +111,10 @@ function ProductHandle({ products, setProducts, formData, setFormData }) {
 
 ProductHandle.propTypes = {
   products: PropTypes.array.isRequired,
-  setProducts: PropTypes.func,
-  formData: PropTypes.object,
-  setFormData: PropTypes.func,
+  setProducts: PropTypes.func.isRequired,
+  formData: PropTypes.object.isRequired,
+  setFormData: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
 };
 
 export default ProductHandle;

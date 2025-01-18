@@ -18,16 +18,25 @@ function ProductModal({
   setProducts,
   formData,
   setFormData,
+  setLoading,
 }) {
   const onSubmit = async () => {
-    if (modalType === "delete") {
-      await productAPI.delProductData(formData.id);
-    } else {
-      await productAPI.updateProductData(formData.id, formData, modalType);
-    }
+    setLoading(true);
 
-    const updatedProducts = await productAPI.getProducts();
-    setProducts(updatedProducts.products);
+    try {
+      if (modalType === "delete") {
+        await productAPI.delProductData(formData.id);
+      } else {
+        await productAPI.updateProductData(formData.id, formData, modalType);
+      }
+
+      const updatedProducts = await productAPI.getProducts();
+      setProducts(updatedProducts.products);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -49,7 +58,7 @@ function ProductModal({
       ) : (
         <ProductForm formData={formData} setFormData={setFormData} />
       )}
-      <DialogFooter className="mt-auto flex h-20 flex-row items-center rounded-b-lg border border-t p-6">
+      <DialogFooter className="mt-auto flex h-20 flex-row items-center gap-3 rounded-b-lg border border-t p-6">
         <DialogClose asChild>
           <Button type="button" variant="secondary">
             取消
@@ -57,7 +66,7 @@ function ProductModal({
         </DialogClose>
         <DialogClose asChild>
           <Button
-            className={modalType === "delete" ? "bg-red-600" : "bg-primary"}
+            className={`!ml-0 ${modalType === "delete" ? "bg-red-600" : "bg-primary"}`}
             type="button"
             onClick={onSubmit}
           >
@@ -70,11 +79,12 @@ function ProductModal({
 }
 
 ProductModal.propTypes = {
-  title: PropTypes.string,
-  modalType: PropTypes.string,
-  setProducts: PropTypes.func,
-  formData: PropTypes.object,
-  setFormData: PropTypes.func,
+  title: PropTypes.string.isRequired,
+  modalType: PropTypes.string.isRequired,
+  setProducts: PropTypes.func.isRequired,
+  formData: PropTypes.object.isRequired,
+  setFormData: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
 };
 
 export default ProductModal;
