@@ -31,6 +31,7 @@ function ProductHandle({
       content: product.content || "",
       is_enabled: product.is_enabled || false,
       imagesUrl: product.imagesUrl || [],
+      rating: product.rating || "",
     });
   };
 
@@ -40,6 +41,7 @@ function ProductHandle({
         <TableRow>
           <TableHead className="text-center">分類</TableHead>
           <TableHead className="text-center">產品名稱</TableHead>
+          <TableHead className="text-center">商品評價星級</TableHead>
           <TableHead className="text-center">原價</TableHead>
           <TableHead className="text-center">售價</TableHead>
           <TableHead className="text-center">是否啟用</TableHead>
@@ -52,6 +54,22 @@ function ProductHandle({
             <TableRow key={item.id}>
               <TableCell className="text-center">{item.category}</TableCell>
               <TableCell className="text-center">{item.title}</TableCell>
+              <TableCell className="text-center">
+                <div className="flex justify-center">
+                  {[...Array(5)].map((star, index) => (
+                    <span
+                      key={index}
+                      className={`text-2xl ${
+                        index < item.rating
+                          ? "text-yellow-500"
+                          : "text-gray-300"
+                      }`}
+                    >
+                      &#9733;
+                    </span>
+                  ))}
+                </div>
+              </TableCell>
               <TableCell className="text-center">{item.origin_price}</TableCell>
               <TableCell className="text-center">{item.price}</TableCell>
               <TableCell className="text-center">

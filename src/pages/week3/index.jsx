@@ -22,6 +22,7 @@ const initialFormData = {
   content: "",
   is_enabled: false,
   imagesUrl: [],
+  rating: "",
 };
 
 function Week3() {

@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { Label, Input, Textarea, Checkbox, Button } from "@/components/ui";
+import StarRating from "@/components/StartRating";
 
 const IMAGE_CONFIG = { MAX: 5, MIN: 1 };
 const FORM_FIELDS = {
@@ -141,6 +142,15 @@ function ProductForm({ formData, setFormData }) {
       {/* Form Section */}
       <div className="col-span-12 sm:col-span-8">
         {renderField(FORM_FIELDS.basic)}
+        <div className="mb-3">
+          <Label htmlFor="rating">星級</Label>
+          <StarRating
+            rating={formData.rating}
+            setRating={(rating) =>
+              setFormData((prevData) => ({ ...prevData, rating }))
+            }
+          />
+        </div>
         <div className="grid grid-cols-2 gap-4">
           {FORM_FIELDS.grid1.map((field) => renderField(field))}
           {FORM_FIELDS.grid2.map((field) => renderField(field))}
