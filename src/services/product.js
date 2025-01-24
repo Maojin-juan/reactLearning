@@ -61,4 +61,16 @@ export const productAPI = {
       throw err;
     }
   },
+
+  getProductPages: async (page) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/api/${import.meta.env.VITE_BASE_PATH}/admin/products?page=${page}`,
+      );
+      return response.data;
+    } catch (error) {
+      console.error("獲取產品頁數失敗:", error);
+      throw error;
+    }
+  },
 };
