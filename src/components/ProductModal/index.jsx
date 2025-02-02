@@ -41,7 +41,7 @@ function ProductModal({
 
   return (
     <DialogContent
-      className={`gap-0 rounded-lg p-0 ${modalType === "delete" ? "h-auto" : "h-5/6"}`}
+      className={`w-full max-w-5xl gap-0 rounded-lg p-0 ${modalType === "delete" ? "h-auto" : "h-5/6"}`}
     >
       <DialogHeader
         className={`mb-auto h-20 justify-center rounded-t-lg border border-b p-6 ${modalType === "delete" ? "bg-red-600 text-white" : "bg-slate-800 text-white"}`}

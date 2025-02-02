@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
-import { Label, Input, Textarea, Checkbox, Button } from "@/components/ui";
+import { Label, Input, Textarea, Checkbox } from "@/components/ui";
+import MultiImageUpload from "@/components/ImageUpload/MultiImageUpload";
 import StarRating from "@/components/StartRating";
 
-const IMAGE_CONFIG = { MAX: 5, MIN: 1 };
 const FORM_FIELDS = {
   basic: {
     id: "title",
@@ -39,38 +39,17 @@ const FORM_FIELDS = {
 function ProductForm({ formData, setFormData }) {
   const handleInputChange = (e) => {
     const { id, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData((prev) => ({
+      ...prev,
       [id]: value,
     }));
   };
 
   const handleCheckboxClick = (id) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [id]: !prevData[id],
+    setFormData((prev) => ({
+      ...prev,
+      [id]: !prev[id],
     }));
-  };
-
-  const handleImageChange = (index, value) => {
-    setFormData((prev) => {
-      const images = [...prev.imagesUrl];
-      images[index] = value;
-
-      if (
-        value &&
-        index === images.length - 1 &&
-        images.length < IMAGE_CONFIG.MAX
-      ) {
-        images.push("");
-      }
-
-      if (images.length > IMAGE_CONFIG.MIN && !images[images.length - 1]) {
-        images.pop();
-      }
-
-      return { ...prev, imagesUrl: images };
-    });
   };
 
   const renderField = ({ id, label, ...props }, Component = Input) => (
@@ -88,67 +67,38 @@ function ProductForm({ formData, setFormData }) {
   return (
     <div className="grid grid-cols-12 gap-6 overflow-y-auto p-6">
       {/* Image Section */}
-      <div className="col-span-12 sm:col-span-4">
+      <div className="col-span-12 sm:col-span-6">
         <div className="mb-3">
-          <Label htmlFor="imageUrl">輸入圖片網址</Label>
+          <Label htmlFor="imageUrl">請輸入主圖網址</Label>
           <Input
             id="imageUrl"
             value={formData.imageUrl}
             onChange={handleInputChange}
             placeholder="請輸入圖片連結"
           />
-          <img className="mt-4" src={formData.imageUrl} alt="主圖" />
-        </div>
-        {formData.imagesUrl.map((image, index) => (
-          <div key={index} className="mb-4">
-            <Input
-              value={image}
-              onChange={(e) => handleImageChange(index, e.target.value)}
-              placeholder={`圖片網址 ${index + 1}`}
-            />
-            {image && (
-              <img src={image} alt={`副圖 ${index + 1}`} className="mt-4" />
-            )}
-          </div>
-        ))}
-        <div className="flex gap-2">
-          <Button
-            className="w-full whitespace-normal"
-            onClick={() =>
-              setFormData((prev) => ({
-                ...prev,
-                imagesUrl: [...prev.imagesUrl, ""],
-              }))
+          <img
+            className="mx-auto mt-4 size-48 rounded-full"
+            src={formData.imageUrl}
+            alt="主圖"
+          />
+
+          <MultiImageUpload
+            imagesUrl={formData.imagesUrl || []}
+            setImagesUrl={(urls) =>
+              setFormData((prev) => ({ ...prev, imagesUrl: urls }))
             }
-          >
-            新增圖片
-          </Button>
-          {formData.imagesUrl.length > 0 && (
-            <Button
-              className="w-full whitespace-normal bg-red-600"
-              onClick={() =>
-                setFormData((prev) => ({
-                  ...prev,
-                  imagesUrl: prev.imagesUrl.slice(0, -1),
-                }))
-              }
-            >
-              取消圖片
-            </Button>
-          )}
+          />
         </div>
       </div>
 
       {/* Form Section */}
-      <div className="col-span-12 sm:col-span-8">
+      <div className="col-span-12 sm:col-span-6">
         {renderField(FORM_FIELDS.basic)}
         <div className="mb-3">
           <Label htmlFor="rating">星級</Label>
           <StarRating
             rating={formData.rating}
-            setRating={(rating) =>
-              setFormData((prevData) => ({ ...prevData, rating }))
-            }
+            setRating={(rating) => setFormData((prev) => ({ ...prev, rating }))}
           />
         </div>
         <div className="grid grid-cols-2 gap-4">
