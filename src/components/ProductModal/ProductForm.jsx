@@ -83,8 +83,8 @@ function ProductForm({ formData, setFormData }) {
           />
 
           <MultiImageUpload
-            imagesUrl={formData.imagesUrl || []}
-            setImagesUrl={(urls) =>
+            imagesUrl={formData?.imagesUrl || []}
+            onImagesChange={(urls) =>
               setFormData((prev) => ({ ...prev, imagesUrl: urls }))
             }
           />

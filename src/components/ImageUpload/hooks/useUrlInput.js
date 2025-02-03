@@ -1,8 +1,8 @@
 import { useState, useCallback } from "react";
 
 export const useUrlInput = (
-  images,
-  setImagesUrl,
+  imagesUrl,
+  onImagesChange,
   setShowUrlInput,
   setError,
   setImages,
@@ -27,7 +27,7 @@ export const useUrlInput = (
       }
 
       const newImage = {
-        id: Math.random().toString(36).substr(2, 9),
+        id: Math.random().toString(36).slice(2, 9),
         preview: imageUrl,
         progress: 100,
         status: "complete",
@@ -36,12 +36,12 @@ export const useUrlInput = (
       };
 
       setImages((prev) => [...prev, newImage]);
-      setImagesUrl((prev) => [...prev, imageUrl]);
+      onImagesChange([...imagesUrl, imageUrl]);
       setImageUrl("");
       setShowUrlInput(false);
       setError("");
     },
-    [imageUrl, setError, setImages, setImagesUrl, setShowUrlInput],
+    [imagesUrl, imageUrl, setError, setImages, onImagesChange, setShowUrlInput],
   );
 
   return { handleUrlSubmit, imageUrl, setImageUrl };

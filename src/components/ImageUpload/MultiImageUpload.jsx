@@ -9,7 +9,7 @@ import ImageUploadArea from "./components/ImageUploadArea";
 import ImageGrid from "./components/ImageGrid";
 import UrlInputForm from "./components/UrlInputForm";
 
-const MultiImageUpload = ({ imagesUrl = [], setImagesUrl }) => {
+const MultiImageUpload = ({ imagesUrl = [], onImagesChange }) => {
   const [error, setError] = useState("");
   const [showUrlInput, setShowUrlInput] = useState(false);
 
@@ -21,11 +21,11 @@ const MultiImageUpload = ({ imagesUrl = [], setImagesUrl }) => {
     isDragging,
     setIsDragging,
     setImages,
-  } = useImageUpload(imagesUrl, setImagesUrl, setError);
+  } = useImageUpload(imagesUrl, onImagesChange, setError);
 
   const { handleUrlSubmit, imageUrl, setImageUrl } = useUrlInput(
-    images,
-    setImagesUrl,
+    imagesUrl,
+    onImagesChange,
     setShowUrlInput,
     setError,
     setImages,
@@ -72,7 +72,7 @@ const MultiImageUpload = ({ imagesUrl = [], setImagesUrl }) => {
 
 MultiImageUpload.propTypes = {
   imagesUrl: PropTypes.arrayOf(PropTypes.string).isRequired,
-  setImagesUrl: PropTypes.func.isRequired,
+  onImagesChange: PropTypes.func.isRequired,
 };
 
 export default MultiImageUpload;
