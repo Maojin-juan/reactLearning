@@ -52,6 +52,8 @@ ImageItem.propTypes = {
     id: PropTypes.string.isRequired,
     preview: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+    progress: PropTypes.number.isRequired,
   }).isRequired,
   onRemove: PropTypes.func.isRequired,
 };
