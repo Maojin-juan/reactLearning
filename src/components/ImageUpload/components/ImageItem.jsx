@@ -27,6 +27,22 @@ const ImageItem = ({ image, onRemove }) => {
           <X className="h-4 w-4" />
         </button>
       </div>
+
+      {image.status !== "complete" && (
+        <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black bg-opacity-40">
+          <div className="w-3/4">
+            <div className="h-2 overflow-hidden rounded-full bg-gray-200">
+              <div
+                className="h-full bg-blue-500 transition-all duration-300"
+                style={{ width: `${image.progress}%` }}
+              />
+            </div>
+            <p className="mt-2 text-center text-sm text-white">
+              {image.progress}%
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -35,67 +35,68 @@ export const useImageUpload = (initialImagesUrl, setImagesUrl, setError) => {
   };
 
   const processFiles = useCallback(
-    (files) => {
+    async (files) => {
       const newImages = [];
       const errors = [];
+      const UPLOAD_TIME = 2000; // 模擬上傳時間為2秒
+      const STEPS = 20; // 分20步完成
+      const INTERVAL_TIME = UPLOAD_TIME / STEPS;
 
-      Array.from(files).forEach((file) => {
+      // 驗證並準備檔案
+      for (const file of Array.from(files)) {
         const error = validateImage(file);
         if (error) {
           errors.push(`${file.name}: ${error}`);
-        } else {
-          newImages.push({
-            file,
-            id: Math.random().toString(36).substr(2, 9),
-            preview: URL.createObjectURL(file),
-            progress: 0,
-            status: "pending",
-            type: "file",
-          });
+          continue;
         }
-      });
 
-      if (errors.length > 0) {
-        setError(errors.join("\n"));
-      } else {
-        setError("");
-        setImages((prev) => [...prev, ...newImages]);
-        newImages.forEach((image) => simulateUpload(image.id));
+        const imageId = Math.random().toString(36).slice(2, 11);
+        const newImage = {
+          file,
+          id: imageId,
+          preview: URL.createObjectURL(file),
+          progress: 0,
+          status: "pending",
+          type: "file",
+        };
+
+        newImages.push(newImage);
       }
-    },
-    [setError, setImages],
-  );
 
-  const simulateUpload = useCallback(
-    async (imageId) => {
-      let progress = 0;
-      const interval = setInterval(() => {
-        progress += 10;
-        setImages((prev) =>
-          prev.map((img) =>
-            img.id === imageId
-              ? {
-                  ...img,
-                  progress,
-                  status: progress === 100 ? "complete" : "uploading",
-                }
-              : img,
-          ),
-        );
+      // 先新增待處理的圖片
+      setImages((prev) => [...prev, ...newImages]);
 
-        if (progress >= 100) {
-          clearInterval(interval);
-        }
-      }, 200);
+      // 逐一處理上傳
+      for (const newImage of newImages) {
+        let progress = 0;
+        const progressTimer = setInterval(() => {
+          progress += 10;
+          if (progress <= 90) {
+            setImages((prev) =>
+              prev.map((img) =>
+                img.id === newImage.id ? { ...img, progress: progress } : img,
+              ),
+            );
+          }
+        }, INTERVAL_TIME);
 
-      const image = images.find((img) => img.id === imageId);
-      if (image?.type === "file") {
         try {
-          const response = await productAPI.uploadImage(image.file);
-          // 更新圖片狀態
+          // 設定上傳狀態
           setImages((prev) =>
             prev.map((img) =>
-              img.id === imageId
+              img.id === newImage.id
+                ? { ...img, status: "uploading", progress: 50 }
+                : img,
+            ),
+          );
+
+          // 呼叫 API 上傳
+          const response = await productAPI.uploadImage(newImage.file);
+          clearInterval(progressTimer);
+
+          setImages((prev) => {
+            const updatedImages = prev.map((img) =>
+              img.id === newImage.id
                 ? {
                     ...img,
                     url: response.imageUrl,
@@ -103,28 +104,50 @@ export const useImageUpload = (initialImagesUrl, setImagesUrl, setError) => {
                     progress: 100,
                   }
                 : img,
-            ),
-          );
+            );
 
-          // 修改這裡：直接傳入新的陣列，而不是使用函數形式
-          const updatedUrls = [...imagesUrl, response.imageUrl];
-          setImagesUrl(updatedUrls);
+            // 更新父元件的 ImagesUrl
+            const completedUrls = updatedImages
+              .filter((img) => img.status === "complete")
+              .map((img) => img.url);
+            setImagesUrl(completedUrls);
+
+            return updatedImages;
+          });
         } catch (error) {
           console.error("上傳圖片失敗:", error);
-          setError("上傳圖片失敗");
+          clearInterval(progressTimer);
+          setImages((prev) =>
+            prev.map((img) =>
+              img.id === newImage.id
+                ? { ...img, status: "error", progress: 0 }
+                : img,
+            ),
+          );
+          errors.push(`${newImage.file.name}: 上傳失敗`);
         }
       }
+
+      if (errors.length > 0) {
+        setError(errors.join("\n"));
+      }
     },
-    [images, setError, setImages, setImagesUrl, imagesUrl],
+    [setImages, setError, setImagesUrl],
   );
 
-  const handleDrop = useCallback((e) => {
-    processFiles(e.dataTransfer.files);
-  }, []);
+  const handleDrop = useCallback(
+    (e) => {
+      processFiles(e.dataTransfer.files);
+    },
+    [processFiles],
+  );
 
-  const handleFileUpload = useCallback((e) => {
-    processFiles(e.target.files);
-  }, []);
+  const handleFileUpload = useCallback(
+    (e) => {
+      processFiles(e.target.files);
+    },
+    [processFiles],
+  );
 
   const removeImage = useCallback(
     (imageId) => {
@@ -133,7 +156,7 @@ export const useImageUpload = (initialImagesUrl, setImagesUrl, setError) => {
         const newImages = images.filter((img) => img.id !== imageId);
         setImages(newImages);
         const urls = newImages.map((img) => img.url);
-        setImagesUrl(urls); // 移出 setImages callback
+        setImagesUrl(urls);
       }
     },
     [images, setImagesUrl],

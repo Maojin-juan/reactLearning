@@ -74,49 +74,20 @@ export const productAPI = {
     }
   },
 
-  uploadImage: async (formData, onProgress) => {
+  uploadImage: async (file) => {
     try {
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-        onUploadProgress: (progressEvent) => {
-          const progress = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total,
-          );
-          onProgress(progress);
-        },
-      });
+      const formData = new FormData();
+      formData.append("file", file);
 
-      if (!response.ok) {
-        throw new Error("上傳失敗");
-      }
-
-      const data = await response.json();
-      return data;
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/${import.meta.env.VITE_BASE_PATH}/admin/upload`,
+        formData,
+      );
+      console.log("上傳圖片成功", response.data);
+      return response.data;
     } catch (error) {
-      throw new Error("上傳失敗：" + error.message);
+      console.error("上傳圖片失敗:", error);
+      throw error;
     }
   },
-
-  // uploadImage: async (file) => {
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("file", file);
-
-  //     const response = await axios.post(
-  //       `${import.meta.env.VITE_BASE_URL}/api/${import.meta.env.VITE_BASE_PATH}/admin/upload`,
-  //       formData,
-  //       // {
-  //       //   headers: {
-  //       //     "Content-Type": "multipart/form-data",
-  //       //   },
-  //       // },
-  //     );
-  //     console.log("上傳圖片成功");
-  //     return response.data;
-  //   } catch (error) {
-  //     console.error("上傳圖片失敗:", error);
-  //     throw error;
-  //   }
-  // },
 };
