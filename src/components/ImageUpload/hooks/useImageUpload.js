@@ -1,9 +1,10 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { productAPI } from "@/services/product";
 
-export const useImageUpload = (initialImagesUrl, setImagesUrl, setError) => {
+export const useImageUpload = (initialImagesUrl, onImagesChange, setError) => {
   const [isDragging, setIsDragging] = useState(false);
   const [images, setImages] = useState([]);
+  const isUpdatingRef = useRef(false);
 
   useEffect(() => {
     if (Array.isArray(initialImagesUrl)) {
@@ -50,7 +51,7 @@ export const useImageUpload = (initialImagesUrl, setImagesUrl, setError) => {
           continue;
         }
 
-        const imageId = Math.random().toString(36).slice(2, 11);
+        const imageId = Math.random().toString(36).slice(2, 9);
         const newImage = {
           file,
           id: imageId,
@@ -81,15 +82,6 @@ export const useImageUpload = (initialImagesUrl, setImagesUrl, setError) => {
         }, INTERVAL_TIME);
 
         try {
-          // 設定上傳狀態
-          setImages((prev) =>
-            prev.map((img) =>
-              img.id === newImage.id
-                ? { ...img, status: "uploading", progress: 50 }
-                : img,
-            ),
-          );
-
           // 呼叫 API 上傳
           const response = await productAPI.uploadImage(newImage.file);
           clearInterval(progressTimer);
@@ -106,11 +98,17 @@ export const useImageUpload = (initialImagesUrl, setImagesUrl, setError) => {
                 : img,
             );
 
-            // 更新父元件的 ImagesUrl
-            const completedUrls = updatedImages
-              .filter((img) => img.status === "complete")
-              .map((img) => img.url);
-            setImagesUrl(completedUrls);
+            // 僅在上傳完成時更新一次
+            if (!isUpdatingRef.current) {
+              isUpdatingRef.current = true;
+              setTimeout(() => {
+                const completedUrls = updatedImages
+                  .filter((img) => img.status === "complete")
+                  .map((img) => img.url);
+                onImagesChange(completedUrls);
+                isUpdatingRef.current = false;
+              }, 0);
+            }
 
             return updatedImages;
           });
@@ -132,7 +130,7 @@ export const useImageUpload = (initialImagesUrl, setImagesUrl, setError) => {
         setError(errors.join("\n"));
       }
     },
-    [setImages, setError, setImagesUrl],
+    [setImages, setError, onImagesChange],
   );
 
   const handleDrop = useCallback(
@@ -156,10 +154,10 @@ export const useImageUpload = (initialImagesUrl, setImagesUrl, setError) => {
         const newImages = images.filter((img) => img.id !== imageId);
         setImages(newImages);
         const urls = newImages.map((img) => img.url);
-        setImagesUrl(urls);
+        onImagesChange(urls);
       }
     },
-    [images, setImagesUrl],
+    [images, onImagesChange],
   );
 
   return {
