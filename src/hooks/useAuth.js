@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { signInAPI } from "@/services/signIn";
+import { signInAPI } from "@/services/admin/signIn";
 import axios from "axios";
 
 export const useAuth = () => {

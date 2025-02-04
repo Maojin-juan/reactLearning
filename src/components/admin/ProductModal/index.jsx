@@ -10,7 +10,7 @@ import {
 } from "@/components/ui";
 import ProductForm from "./ProductForm";
 
-import { productAPI } from "@/services/product";
+import { productAPI } from "@/services/admin/product";
 
 function ProductModal({
   title,

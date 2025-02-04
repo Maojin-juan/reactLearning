@@ -5,7 +5,7 @@ import "@/assets/style/loading.css";
 
 import { useAuth } from "@/hooks/useAuth";
 
-import { productAPI } from "@/services/product";
+import { productAPI } from "@/services/admin/product";
 
 import Login from "@/components/admin/Login";
 import ProductHandle from "@/components/admin/ProductHandle";

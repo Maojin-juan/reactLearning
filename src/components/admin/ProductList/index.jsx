@@ -9,7 +9,7 @@ import {
   Button,
 } from "@/components/ui";
 
-import { signInAPI } from "@/services/signIn";
+import { signInAPI } from "@/services/admin/signIn";
 
 function ProductList({ products, setTempProduct }) {
   return (

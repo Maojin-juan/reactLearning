@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import Login from "@/components/admin/Login";
 import ProductHandle from "@/components/admin/ProductHandle";
 import ProductModal from "@/components/admin/ProductModal";
-import { productAPI } from "@/services/product";
+import { productAPI } from "@/services/admin/product";
 
 const initialFormData = {
   id: "",

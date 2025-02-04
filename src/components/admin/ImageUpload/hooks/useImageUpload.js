@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from "react";
-import { productAPI } from "@/services/product";
+import { productAPI } from "@/services/admin/product";
 
 export const useImageUpload = (initialImagesUrl, onImagesChange, setError) => {
   const [isDragging, setIsDragging] = useState(false);

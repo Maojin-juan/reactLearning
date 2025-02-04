@@ -3,7 +3,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { Input, Label, Button } from "@/components/ui";
 
-import { signInAPI } from "@/services/signIn";
+import { signInAPI } from "@/services/admin/signIn";
 
 const initialFormData = {
   username: "",
