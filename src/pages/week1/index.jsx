@@ -78,7 +78,7 @@ function Week1() {
   return (
     <>
       <div className="container mx-auto py-10">
-        <div className="mx-auto mt-12 flex gap-6">
+        <div className="mx-auto flex gap-6">
           <div className="w-1/2">
             <h2 className="mb-2 text-3xl">產品列表</h2>
             <Table>
