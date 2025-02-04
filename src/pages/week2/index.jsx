@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import ProductDetail from "@/components/ProductDetail";
-import ProductList from "@/components/ProductList";
-import Login from "@/components/Login";
+import ProductDetail from "@/components/backend/ProductDetail";
+import ProductList from "@/components/backend/ProductList";
+import Login from "@/components/backend/Login";
 
 function Week2() {
   const [isAuth, setIsAuth] = useState(false);

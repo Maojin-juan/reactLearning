@@ -5,9 +5,9 @@ import "@/assets/style/loading.css";
 
 import { useAuth } from "@/hooks/useAuth";
 
-import Login from "@/components/Login";
-import ProductHandle from "@/components/ProductHandle";
-import ProductModal from "@/components/ProductModal";
+import Login from "@/components/backend/Login";
+import ProductHandle from "@/components/backend/ProductHandle";
+import ProductModal from "@/components/backend/ProductModal";
 import { productAPI } from "@/services/product";
 
 const initialFormData = {
@@ -47,7 +47,7 @@ function Week3() {
   return (
     <>
       {isAuth ? (
-        <div className="container mx-auto mt-12 gap-6">
+        <div className="container mx-auto gap-6">
           <Dialog>
             <div className="flex justify-end">
               <DialogTrigger asChild>

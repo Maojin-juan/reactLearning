@@ -7,9 +7,9 @@ import { useAuth } from "@/hooks/useAuth";
 
 import { productAPI } from "@/services/product";
 
-import Login from "@/components/Login";
-import ProductHandle from "@/components/ProductHandle";
-import ProductModal from "@/components/ProductModal";
+import Login from "@/components/backend/Login";
+import ProductHandle from "@/components/backend/ProductHandle";
+import ProductModal from "@/components/backend/ProductModal";
 import CustomPagination from "@/components/CustomPagination";
 
 const initialFormData = {
@@ -68,7 +68,7 @@ function Week4() {
   return (
     <>
       {isAuth ? (
-        <div className="container mx-auto mt-12 gap-6">
+        <div className="container mx-auto gap-6">
           <Dialog>
             <div className="flex justify-end">
               <DialogTrigger asChild>
