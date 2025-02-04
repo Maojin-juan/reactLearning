@@ -10,7 +10,7 @@ import {
   TableCell,
   Button,
 } from "@/components/ui";
-import ProductModal from "@/components/backend/ProductModal";
+import ProductModal from "@/components/admin/ProductModal";
 function ProductHandle({
   products,
   setProducts,

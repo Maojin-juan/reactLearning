@@ -5,9 +5,9 @@ import "@/assets/style/loading.css";
 
 import { useAuth } from "@/hooks/useAuth";
 
-import Login from "@/components/backend/Login";
-import ProductHandle from "@/components/backend/ProductHandle";
-import ProductModal from "@/components/backend/ProductModal";
+import Login from "@/components/admin/Login";
+import ProductHandle from "@/components/admin/ProductHandle";
+import ProductModal from "@/components/admin/ProductModal";
 import { productAPI } from "@/services/product";
 
 const initialFormData = {

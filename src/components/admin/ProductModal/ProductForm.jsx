@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { Label, Input, Textarea, Checkbox } from "@/components/ui";
-import MultiImageUpload from "@/components/backend/ImageUpload";
-import StarRating from "@/components/backend/StartRating";
+import MultiImageUpload from "@/components/admin/ImageUpload";
+import StarRating from "@/components/admin/StartRating";
 
 const FORM_FIELDS = {
   basic: {

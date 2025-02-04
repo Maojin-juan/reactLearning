@@ -7,9 +7,9 @@ import { useAuth } from "@/hooks/useAuth";
 
 import { productAPI } from "@/services/product";
 
-import Login from "@/components/backend/Login";
-import ProductHandle from "@/components/backend/ProductHandle";
-import ProductModal from "@/components/backend/ProductModal";
+import Login from "@/components/admin/Login";
+import ProductHandle from "@/components/admin/ProductHandle";
+import ProductModal from "@/components/admin/ProductModal";
 import CustomPagination from "@/components/CustomPagination";
 
 const initialFormData = {
