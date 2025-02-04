@@ -9,8 +9,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  TableFooter,
   Button,
   Input,
+  Label,
+  Textarea,
 } from "@/components/ui";
 
 import { currency } from "../../utils/filter";
@@ -188,7 +191,7 @@ function Week5() {
   // }, []);
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto w-5/6">
       {/* Product Modal */}
       {/* <div className="modal" id="productModal" ref={productModalRef}>
         <div className="modal-dialog">
@@ -223,7 +226,7 @@ function Week5() {
                 >
                   <i className="fa-solid fa-minus"></i>
                 </button>
-                <input
+                <Input
                   className="form-control"
                   type="number"
                   value={cartQuantity}
@@ -256,7 +259,7 @@ function Week5() {
       </div> */}
 
       {/* 產品列表 */}
-      <Table className="w-full table-fixed">
+      <Table className="mb-12 w-full table-fixed">
         <TableHeader>
           <TableRow>
             <TableHead className="text-center">圖片</TableHead>
@@ -281,6 +284,7 @@ function Week5() {
               <TableCell>
                 <div className="flex flex-col justify-center gap-3 sm:flex-row">
                   <Button
+                    variant="outline"
                     className="h-auto whitespace-normal"
                     onClick={() => openModal(product.id)}
                     disabled={loadingProductId === product.id}
@@ -322,7 +326,7 @@ function Week5() {
           清空購物車
         </Button>
       </div>
-      <Table>
+      <Table className="mb-12">
         <TableHeader>
           <TableRow>
             <TableHead className="text-center">品名</TableHead>
@@ -374,54 +378,50 @@ function Week5() {
               </TableRow>
             ))}
         </TableBody>
-        <tfoot>
-          <tr>
-            <td colSpan="3" className="text-end">
+        <TableFooter>
+          <TableRow>
+            <TableCell className="text-right" colSpan={3}>
               總計
-            </td>
-            <td className="text-end">{currency(cart?.total)}</td>
-          </tr>
-          {cart?.final_total !== cart?.total ? (
-            <tr>
-              <td colSpan="3" className="text-success text-end">
-                折扣價
-              </td>
-              <td className="text-success text-end">
-                {currency(cart?.final_total)}
-              </td>
-            </tr>
-          ) : (
-            ""
-          )}
-        </tfoot>
+            </TableCell>
+            <TableCell className="text-right">
+              {currency(cart?.total)}
+            </TableCell>
+            {cart?.final_total !== cart?.total ? (
+              <TableRow>
+                <TableCell colSpan="3" className="text-success text-end">
+                  折扣價
+                </TableCell>
+                <TableCell className="text-success text-end">
+                  {currency(cart?.final_total)}
+                </TableCell>
+              </TableRow>
+            ) : (
+              ""
+            )}
+          </TableRow>
+        </TableFooter>
       </Table>
-      <div className="input-group input-group-sm mb-3">
-        <input
+      <div className="mb-12 flex gap-4">
+        <Input
           type="text"
           className="form-control"
           placeholder="請輸入優惠碼"
           value={couponCode}
           onChange={(e) => setCouponCode(e.target.value)}
         />
-        <div className="input-group-append">
-          <button
-            className="btn btn-outline-secondary"
-            type="button"
-            onClick={() => addCouponCode(couponCode)}
-          >
-            套用優惠碼
-          </button>
-        </div>
+        <Button type="button" onClick={() => addCouponCode(couponCode)}>
+          套用優惠碼
+        </Button>
       </div>
 
       {/* 表單資料 */}
-      <div className="row justify-content-center my-5">
+      <div className="mx-auto w-1/2">
         <form onSubmit={handleSubmit(onSubmit)} className="col-md-6">
           <div className="mb-3">
             <label htmlFor="name" className="form-label">
               收件人姓名
             </label>
-            <input
+            <Input
               id="name"
               type="text"
               className="form-control"
@@ -437,7 +437,7 @@ function Week5() {
             <label htmlFor="email" className="form-label">
               Email
             </label>
-            <input
+            <Input
               id="email"
               type="email"
               className="form-control"
@@ -456,7 +456,7 @@ function Week5() {
             <label htmlFor="tel" className="form-label">
               收件人電話
             </label>
-            <input
+            <Input
               id="tel"
               type="tel"
               className="form-control"
@@ -480,7 +480,7 @@ function Week5() {
             <label htmlFor="address" className="form-label">
               收件人地址
             </label>
-            <input
+            <Input
               id="address"
               type="text"
               className="form-control"
@@ -493,10 +493,10 @@ function Week5() {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="message" className="form-label">
+            <Label htmlFor="message" className="form-label">
               留言
-            </label>
-            <textarea
+            </Label>
+            <Textarea
               id="message"
               className="form-control"
               placeholder="留言"
@@ -506,9 +506,9 @@ function Week5() {
           </div>
 
           <div className="text-end">
-            <button type="submit" className="btn btn-danger">
+            <Button type="submit" className="btn btn-danger">
               送出訂單
-            </button>
+            </Button>
           </div>
         </form>
       </div>

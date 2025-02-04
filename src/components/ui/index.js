@@ -16,6 +16,7 @@ export {
   TableHead,
   TableBody,
   TableCell,
+  TableFooter,
 } from "@/components/ui/table";
 
 export { Label } from "@/components/ui/label";
