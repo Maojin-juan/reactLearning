@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { signInAPI } from "@/services/admin/signIn";
-import axios from "axios";
 
 export const useAuth = () => {
   const [isAuth, setIsAuth] = useState(false);
@@ -12,14 +11,12 @@ export const useAuth = () => {
     );
 
     if (token) {
-      axios.defaults.headers.common.Authorization = token;
-
       const verifyAdmin = async () => {
         try {
           await signInAPI.checkAuth();
           setIsAuth(true);
         } catch (err) {
-          console.log(err.response?.data?.message || "驗證失敗");
+          console.error("認證失敗:", err);
         }
       };
 
@@ -27,5 +24,5 @@ export const useAuth = () => {
     }
   }, []);
 
-  return [isAuth, setIsAuth];
+  return { isAuth, setIsAuth };
 };

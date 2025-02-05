@@ -1,93 +1,34 @@
-import axios from "axios";
+import { adminAPI } from "@/utils/axiosClient";
 
 export const productAPI = {
-  getProducts: async () => {
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/api/${import.meta.env.VITE_BASE_PATH}/admin/products`,
-      );
-      return response.data;
-    } catch (error) {
-      console.error("API 錯誤:", error);
-      throw error;
-    }
-  },
+  // 取得產品列表
+  getProducts: () => adminAPI.get("/products"),
 
-  updateProductData: async (id, formData, modalType) => {
-    const url =
-      modalType === "edit"
-        ? `${import.meta.env.VITE_BASE_URL}/api/${import.meta.env.VITE_BASE_PATH}/admin/product/${id}`
-        : `${import.meta.env.VITE_BASE_URL}/api/${import.meta.env.VITE_BASE_PATH}/admin/product`;
-
-    const productData = {
+  // 更新或新增產品
+  updateProductData: (id, formData, modalType) => {
+    const url = modalType === "edit" ? `/product/${id}` : "/product";
+    const method = modalType === "edit" ? "put" : "post";
+    return adminAPI[method](url, {
       data: {
         ...formData,
         origin_price: Number(formData.origin_price),
         price: Number(formData.price),
-        is_enabled: formData.is_enabled ? true : false,
+        is_enabled: Boolean(formData.is_enabled),
         imagesUrl: formData.imagesUrl,
       },
-    };
-
-    try {
-      let response;
-      if (modalType === "edit") {
-        response = await axios.put(url, productData);
-        console.log("更新成功", response.data);
-      } else {
-        response = await axios.post(url, productData);
-        console.log("新增成功", response.data);
-      }
-
-      return response.data;
-    } catch (err) {
-      console.error(
-        modalType === "edit" ? "更新失敗" : "新增失敗",
-        err.response.data.message,
-      );
-      throw err;
-    }
+    });
   },
 
-  delProductData: async (id) => {
-    try {
-      const response = await axios.delete(
-        `${import.meta.env.VITE_BASE_URL}/api/${import.meta.env.VITE_BASE_PATH}/admin/product/${id}`,
-      );
-      console.log("刪除成功", response.data);
-      return response.data;
-    } catch (err) {
-      console.error("刪除失敗", err.response.data.message);
-      throw err;
-    }
-  },
+  // 刪除產品
+  delProductData: (id) => adminAPI.delete(`/product/${id}`),
 
-  getProductPages: async (page) => {
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/api/${import.meta.env.VITE_BASE_PATH}/admin/products?page=${page}`,
-      );
-      return response.data;
-    } catch (error) {
-      console.error("獲取產品頁數失敗:", error);
-      throw error;
-    }
-  },
+  // 分頁取得產品
+  getProductPages: (page) => adminAPI.get(`/products?page=${page}`),
 
-  uploadImage: async (file) => {
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/api/${import.meta.env.VITE_BASE_PATH}/admin/upload`,
-        formData,
-      );
-      console.log("上傳圖片成功", response.data);
-      return response.data;
-    } catch (error) {
-      console.error("上傳圖片失敗:", error);
-      throw error;
-    }
+  // 上傳圖片
+  uploadImage: (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    return adminAPI.post("/upload", formData);
   },
 };

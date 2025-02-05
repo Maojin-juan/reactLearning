@@ -26,7 +26,7 @@ const initialFormData = {
 };
 
 function Week3() {
-  const [isAuth, setIsAuth] = useAuth();
+  const { isAuth, setIsAuth } = useAuth();
   const [products, setProducts] = useState([]);
   const [formData, setFormData] = useState(initialFormData);
   const [loading, setLoading] = useState(false);

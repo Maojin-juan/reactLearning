@@ -1,39 +1,21 @@
-import axios from "axios";
+import { authAPI } from "@/utils/axiosClient";
 
 export const signInAPI = {
   checkAuth: async () => {
     try {
-      const token = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("hexToken="))
-        ?.split("=")[1];
-
-      if (token) {
-        axios.defaults.headers.common.Authorization = token;
-      } else {
-        console.warn("Token not found");
-        throw new Error("Token not found");
-      }
-
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/api/user/check`,
-      );
-      return response.data;
+      return await authAPI.post("/user/check");
     } catch (error) {
-      console.error("API 錯誤:", error);
+      console.error("驗證失敗:", error);
       throw error;
     }
   },
 
   signIn: async (formData) => {
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/admin/signin`,
-        formData,
-      );
-      return response.data;
+      const response = await authAPI.post("/admin/signin", formData);
+      return response;
     } catch (error) {
-      console.error("API 錯誤:", error);
+      console.error("登入失敗:", error);
       throw error;
     }
   },

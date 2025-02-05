@@ -35,7 +35,7 @@ const initialPaginationState = {
 };
 
 function Week4() {
-  const [isAuth, setIsAuth] = useAuth(false);
+  const { isAuth, setIsAuth } = useAuth();
   const [products, setProducts] = useState([]);
   const [formData, setFormData] = useState(initialFormData);
   const [pagination, setPagination] = useState(initialPaginationState);
