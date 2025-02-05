@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -13,7 +14,13 @@ import { clientProductAPI } from "@/services/client/product";
 import CustomPagination from "@/components/CustomPagination";
 import { currency } from "@/utils/format";
 
-function ProductList({ products, pagination, getCart, onOpenModal }) {
+function ProductList({
+  products,
+  pagination,
+  getCart,
+  onOpenModal,
+  getProducts,
+}) {
   const [loadingCartId, setLoadingCartId] = useState(null);
 
   const addToCart = async (productId) => {
@@ -26,6 +33,11 @@ function ProductList({ products, pagination, getCart, onOpenModal }) {
     } finally {
       setLoadingCartId(null);
     }
+  };
+
+  const handlePageChange = (page) => {
+    // 加入分頁切換邏輯
+    getProducts(page);
   };
 
   return (
@@ -82,9 +94,17 @@ function ProductList({ products, pagination, getCart, onOpenModal }) {
           ))}
         </TableBody>
       </Table>
-      <CustomPagination pagination={pagination} />
+      <CustomPagination pagination={pagination} changePage={handlePageChange} />
     </>
   );
 }
+
+ProductList.propTypes = {
+  products: PropTypes.array,
+  pagination: PropTypes.object.isRequired,
+  getCart: PropTypes.func.isRequired,
+  onOpenModal: PropTypes.func.isRequired,
+  getProducts: PropTypes.func.isRequired,
+};
 
 export default ProductList;

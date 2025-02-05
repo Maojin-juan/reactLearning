@@ -58,6 +58,7 @@ function Week5() {
         pagination={pagination}
         getCart={getCart}
         onOpenModal={handleOpenModal}
+        getProducts={getProducts}
       />
 
       <Cart cart={cart} getCart={getCart} />
@@ -65,9 +66,9 @@ function Week5() {
       <CheckoutForm getCart={getCart} />
 
       <ProductModal
-        isOpen={isOpen}
-        onClose={closeModal}
         product={selectedProduct}
+        open={isOpen}
+        onOpenChange={closeModal} // 改用 closeModal
         getCart={getCart}
       />
     </div>
