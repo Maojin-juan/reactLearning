@@ -1,19 +1,17 @@
-import PropTypes from "prop-types";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import { Outlet } from "react-router-dom";
 
-const Layout = ({ children }) => {
+const Layout = () => {
   return (
     <>
       <Navbar />
-      <div className="my-12">{children}</div>
+      <main className="my-12">
+        <Outlet />
+      </main>
       <Footer />
     </>
   );
-};
-
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export default Layout;
