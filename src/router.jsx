@@ -7,8 +7,8 @@ import Week3 from "./pages/Week3";
 import Week4 from "./pages/Week4";
 import Week5 from "./pages/week5";
 import Week6 from "./pages/week6";
-import ProductList from "./components/client/ProductList";
-import Cart from "./components/client/Cart";
+import CartPage from "./pages/week6/cart";
+import ProductListPage from "./pages/week6/product";
 
 export const router = createHashRouter([
   {
@@ -49,15 +49,25 @@ export const router = createHashRouter([
           },
           {
             path: "productList",
-            element: <ProductList />,
+            element: <ProductListPage />,
           },
           {
             path: "cart",
-            element: <Cart />,
+            element: <CartPage />,
           },
           {
             path: "login",
             element: <Week4 />,
+          },
+        ],
+      },
+      {
+        path: "week7",
+        element: <Week6 />,
+        children: [
+          {
+            index: true,
+            element: <Home week={7} />,
           },
         ],
       },

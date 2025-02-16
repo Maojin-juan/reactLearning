@@ -6,7 +6,7 @@ const createAxiosClient = (config = {}) => {
 
   const getBaseURL = () => {
     if (isAuth) {
-      return `${import.meta.env.VITE_BASE_URL}/api`;
+      return `${import.meta.env.VITE_BASE_URL}`;
     }
     return `${import.meta.env.VITE_BASE_URL}/api/${import.meta.env.VITE_BASE_PATH}${isAdmin ? "/admin" : ""}`;
   };
