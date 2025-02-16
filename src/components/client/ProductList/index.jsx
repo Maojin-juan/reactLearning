@@ -13,6 +13,7 @@ import { Loader2 } from "lucide-react";
 import { clientProductAPI } from "@/services/client/product";
 import CustomPagination from "@/components/CustomPagination";
 import { currency } from "@/utils/format";
+import Swal from "sweetalert2";
 
 function ProductList({
   products,
@@ -28,8 +29,25 @@ function ProductList({
     try {
       await clientProductAPI.addToCart(productId, 1);
       getCart();
+      Swal.fire({
+        icon: "success",
+        title: "成功加入購物車",
+        showConfirmButton: false,
+        timer: 1500,
+        position: "bottom-end",
+        toast: true,
+      });
     } catch (error) {
       console.error("加入購物車失敗:", error);
+      Swal.fire({
+        icon: "error",
+        title: "加入購物車失敗",
+        text: "請稍後再試",
+        showConfirmButton: false,
+        timer: 1500,
+        position: "bottom-end",
+        toast: true,
+      });
     } finally {
       setLoadingCartId(null);
     }

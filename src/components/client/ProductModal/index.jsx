@@ -7,12 +7,12 @@ import {
   DialogTitle,
   Input,
   Button,
-  DialogClose,
   DialogDescription,
 } from "@/components/ui";
 import { Loader2, X, Plus, Minus } from "lucide-react";
 import { currency } from "@/utils/format";
 import { clientProductAPI } from "@/services/client/product";
+import Swal from "sweetalert2";
 
 function ProductModal({ product, open, onOpenChange, getCart }) {
   const [cartQuantity, setCartQuantity] = useState(1);
@@ -24,8 +24,25 @@ function ProductModal({ product, open, onOpenChange, getCart }) {
       await clientProductAPI.addToCart(product.id, cartQuantity);
       getCart();
       onOpenChange(false);
+      Swal.fire({
+        icon: "success",
+        title: "成功加入購物車",
+        showConfirmButton: false,
+        timer: 1500,
+        position: "bottom-end",
+        toast: true,
+      });
     } catch (error) {
       console.error("加入購物車失敗:", error);
+      Swal.fire({
+        icon: "error",
+        title: "加入購物車失敗",
+        text: "請稍後再試",
+        showConfirmButton: false,
+        timer: 1500,
+        position: "bottom-end",
+        toast: true,
+      });
     } finally {
       setIsLoading(false);
     }

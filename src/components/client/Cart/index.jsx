@@ -10,22 +10,41 @@ import {
   Button,
   Input,
 } from "@/components/ui";
-import { Loader2 } from "lucide-react";
+import { Plus, Minus, Loader2 } from "lucide-react";
 import { currency } from "@/utils/format";
 import { clientProductAPI } from "@/services/client/product";
+import Swal from "sweetalert2";
 
 function Cart({ cart, getCart }) {
   const [couponCode, setCouponCode] = useState("");
   const [loadingId, setLoadingId] = useState(null);
+  const [localQty, setLocalQty] = useState({});
 
   // 更新購物車商品數量
   const updateCart = async (id, qty) => {
     setLoadingId(id);
     try {
       await clientProductAPI.updateCart(id, qty);
+      Swal.fire({
+        icon: "success",
+        title: "更新成功",
+        toast: true,
+        position: "bottom-end",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       getCart();
     } catch (error) {
       console.error("更新購物車失敗:", error);
+      Swal.fire({
+        icon: "error",
+        title: "更新失敗",
+        text: "請稍後再試",
+        toast: true,
+        position: "bottom-end",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } finally {
       setLoadingId(null);
     }
@@ -37,8 +56,25 @@ function Cart({ cart, getCart }) {
     try {
       await clientProductAPI.deleteCart(id);
       getCart();
+      Swal.fire({
+        icon: "success",
+        title: "成功刪除購物車商品",
+        toast: true,
+        position: "bottom-end",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } catch (error) {
       console.error("刪除購物車商品失敗:", error);
+      Swal.fire({
+        icon: "error",
+        title: "刪除購物車商品失敗",
+        text: "請稍後再試",
+        toast: true,
+        position: "bottom-end",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } finally {
       setLoadingId(null);
     }
@@ -49,8 +85,25 @@ function Cart({ cart, getCart }) {
     try {
       await clientProductAPI.deleteCartAll();
       getCart();
+      Swal.fire({
+        icon: "success",
+        title: "成功刪除購物車所有商品",
+        toast: true,
+        position: "bottom-end",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } catch (error) {
       console.error("清空購物車失敗:", error);
+      Swal.fire({
+        icon: "error",
+        title: "刪除購物車所有商品失敗",
+        text: "請稍後再試",
+        toast: true,
+        position: "bottom-end",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 
@@ -92,18 +145,80 @@ function Cart({ cart, getCart }) {
                 )}
               </TableCell>
               <TableCell className="text-center">
-                <div className="flex items-center justify-center gap-4">
-                  <Input
-                    type="number"
-                    className="w-32"
-                    min="1"
-                    value={item.qty}
+                <div className="flex items-center justify-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={() => updateCart(item.id, item.qty - 1)}
+                    disabled={loadingId === item.id || item.qty <= 1}
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="number"
+                      className={`w-20 text-center ${
+                        localQty[item.id] !== undefined ? "border-blue-500" : ""
+                      }`}
+                      min="1"
+                      value={localQty[item.id] ?? item.qty}
+                      disabled={loadingId === item.id}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          const newQty = Number(e.target.value);
+                          if (newQty >= 1 && newQty !== item.qty) {
+                            updateCart(item.id, newQty);
+                          }
+                          setLocalQty((prev) => ({
+                            ...prev,
+                            [item.id]: undefined,
+                          }));
+                        }
+                      }}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        const newQty = Number(value);
+                        if (newQty >= 1) {
+                          setLocalQty((prev) => ({
+                            ...prev,
+                            [item.id]: newQty,
+                          }));
+                        }
+                      }}
+                    />
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={() => updateCart(item.id, item.qty + 1)}
                     disabled={loadingId === item.id}
-                    onChange={(e) =>
-                      updateCart(item.id, Number(e.target.value))
-                    }
-                  />
-                  <p>{item.product.unit}</p>
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                  <span className="relative">
+                    {item.product.unit}
+
+                    {localQty[item.id] !== undefined && (
+                      <Button
+                        variant="secondary"
+                        className="absolute left-[calc(100%+0.5rem)] top-1/2 h-8 -translate-y-1/2 whitespace-nowrap"
+                        onClick={() => {
+                          const newQty = localQty[item.id];
+                          if (newQty >= 1 && newQty !== item.qty) {
+                            updateCart(item.id, newQty);
+                          }
+                          setLocalQty((prev) => ({
+                            ...prev,
+                            [item.id]: undefined,
+                          }));
+                        }}
+                      >
+                        確認
+                      </Button>
+                    )}
+                  </span>
                 </div>
               </TableCell>
               <TableCell className="text-center">

@@ -11,6 +11,7 @@ import {
 import ProductForm from "./ProductForm";
 
 import { productAPI } from "@/services/admin/product";
+import Swal from "sweetalert2";
 
 function ProductModal({
   title,
@@ -26,14 +27,41 @@ function ProductModal({
     try {
       if (modalType === "delete") {
         await productAPI.delProductData(formData.id);
+      } else if (modalType === "edit") {
+        await productAPI.updateProductData(formData.id, formData, modalType);
+        Swal.fire({
+          icon: "success",
+          title: "更新成功",
+          showConfirmButton: false,
+          timer: 1500,
+          position: "bottom-end",
+          toast: true,
+        });
       } else {
         await productAPI.updateProductData(formData.id, formData, modalType);
+        Swal.fire({
+          icon: "success",
+          title: "建立新產品成功",
+          showConfirmButton: false,
+          timer: 1500,
+          position: "bottom-end",
+          toast: true,
+        });
       }
 
       const updatedProducts = await productAPI.getProducts();
       setProducts(updatedProducts.products);
     } catch (error) {
       console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "更新失敗",
+        text: "請稍後再試",
+        toast: true,
+        position: "bottom-end",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } finally {
       setLoading(false);
     }
